@@ -1,12 +1,14 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
     <metadata>
         <id>Ltc.MSBuild.TS0911WE3.targets</id>
-        <version>1.0.0</version>
+        <version>1.0.1</version>
         <authors>bigsan</authors>
         <owners>bigsan</owners>
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
         <description>TypeScript 0.9.1.1 + Web Essential 3.0 Compile-on-Save enabler msbuild targets.</description>
+        <releaseNotes>[1.0.1]
+  Change BuildAction of .ts to TypeScriptCompile on package installed.</releaseNotes>
         <language />
         <tags>msbuild typescript we3</tags>
     </metadata>

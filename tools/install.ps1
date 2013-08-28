@@ -28,12 +28,25 @@ function InjectTargets($installPath, $project, $targetsFilePath)
 	$importElement = $buildProject.Xml.AddImport($relativePath)
 }
 
+function ChangeTypeScriptBuildAction($installPath, $project)
+{
+    $buildProject = @([Microsoft.Build.Evaluation.ProjectCollection]::GlobalProjectCollection.GetLoadedProjects($project.FullName))[0]
+    $typeScriptItems = $buildProject.Xml.ItemGroups.Children | where { $_.ItemType -ne "TypeScriptCompile" -and $_.Include.ToLower().EndsWith(".ts") -and -not $_.Include.ToLower().EndsWith(".d.ts") }
+    $typeScriptItems | % { $_.ItemType = "TypeScriptCompile" }
+    $typeScriptItems
+}
+
 $targetsFilePath = 'Build\TypeScriptConfiguration.targets'
 
 Write-Host '- Adding <Import /> into project file...'
 InjectTargets $installPath $project $targetsFilePath
 InjectTargets $installPath $project '$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets'
 Write-Host '- Targets imported.'
+
+Write-Host '- Change BuildAction of .ts to TypeScriptCompile (exclude .d.ts)'
+$changedItems = ChangeTypeScriptBuildAction $installPath $project
+Write-Host "- $($changedItems.Count) .ts items' BuildAction have been changed to [TypeScriptComile]"
+Write-Host '- BuildAction changed.'
 
 $project.Save()
 
